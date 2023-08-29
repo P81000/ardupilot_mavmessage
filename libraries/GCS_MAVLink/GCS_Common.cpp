@@ -948,10 +948,10 @@ ap_message GCS_MAVLINK::mavlink_id_to_ap_message_id(const uint32_t mavlink_id) c
         { MAVLINK_MSG_ID_POWER_STATUS,          MSG_POWER_STATUS},
 
         //AeroRiver
-        { MAVLINK_MSG_ID_AERORIVER_GERAL,       MSG_AERORIVER_GERAL},
-        { MAVLINK_MSG_ID_AERORIVER_LIDAR,       MSG_AERORIVER_LIDAR},
-        { MAVLINK_MSG_ID_AERORIVER_PROBE,       MSG_AERORIVER_PROBE},
-        { MAVLINK_MSG_ID_AERORIVER_CAN,         MSG_AERORIVER_CAN},
+        { MAVLINK_MSG_ID_AERORIVER_GERAL,       AERORIVER_GERAL},
+        { MAVLINK_MSG_ID_AERORIVER_LIDAR,       AERORIVER_LIDAR},
+        { MAVLINK_MSG_ID_AERORIVER_PROBE,       AERORIVER_PROBE},
+        { MAVLINK_MSG_ID_AERORIVER_CAN,         AERORIVER_CAN},
 
 #if HAL_WITH_MCU_MONITORING
         { MAVLINK_MSG_ID_MCU_STATUS,            MSG_MCU_STATUS},
@@ -1944,7 +1944,7 @@ void GCS_MAVLINK::send_system_time() const
 //--- AeroRiver --- //
 void GCS_MAVLINK::handle_msg_aeroriver_geral(const mavlink_message_t &msg) const
 {
-    __mavlink_msg_aeroriver_geral_t packet;
+    __mavlink_aeroriver_geral_t packet;
 
     bool send = false;
     if (!send) { hal.console->printf("Message received - GERAL\n"); send = true; }
@@ -3922,10 +3922,10 @@ void GCS_MAVLINK::handle_common_message(const mavlink_message_t &msg)
         break;
 
     //--- AeroRiver --- //
-    case MAVLINK_MSG_AERORIVER_GERAL:
-        handle_aeroriver_geral(msg);
+    case MAVLINK_MSG_ID_AERORIVER_GERAL:
+        handle_msg_aeroriver_geral(msg);
         break;
-        
+
 #if AP_CAMERA_ENABLED
     case MAVLINK_MSG_ID_DIGICAM_CONTROL:
     case MAVLINK_MSG_ID_GOPRO_HEARTBEAT: // heartbeat from a GoPro in Solo gimbal
