@@ -1960,7 +1960,64 @@ void GCS_MAVLINK::handle_msg_aeroriver_geral(const mavlink_message_t &msg) const
                        packet.Data1,
                        packet.Data2);
 }   
+void GCS_MAVLINK::handle_msg_aeroriver_lidar(const mavlink_message_t &msg) const
+{
+    __mavlink_aeroriver_lidar_t packet;
 
+    bool send = false;
+    if (!send) { hal.console->printf("Message received - LIDAR\n"); send = true; }
+
+    mavlink_msg_aeroriver_lidar_decode(&msg, &packet);
+    AP::logger().Write("LidarAeroRiver",
+                       "TimeUS,LidarTime,Dist1,Dist2",
+                       "s---",
+                       "F---",
+                       "Qfff",
+                       AP_HAL::micros64(),
+                       packet.Timestamp,
+                       packet.dist1,
+                       packet.dist2);
+}
+void GCS_MAVLINK::handle_msg_aeroriver_probe(const mavlink_message_t &msg) const
+{
+    __mavlink_aeroriver_probe_t packet;
+
+    bool send = false;
+    if (!send) { hal.console->printf("Message received - PROBE\n"); send = true; }
+
+    mavlink_msg_aeroriver_probe_decode(&msg, &packet);
+    AP::logger().Write("ProbeAeroRiver",
+                       "TimeUS,ProbeTime,Bat1,Bat2",
+                       "s---",
+                       "F---",
+                       "Qfff",
+                       AP_HAL::micros64(),
+                       packet.Timestamp,
+                       packet.bat1,
+                       packet.bat2);
+}
+void GCS_MAVLINK::handle_msg_aeroriver_can(const mavlink_message_t &msg) const
+{
+    __mavlink_aeroriver_can_t packet;
+
+    bool send = false;
+    if (!send) { hal.console->printf("Message received - CAN\n"); send = true; }
+
+    mavlink_msg_aeroriver_can_decode(&msg, &packet);
+    AP::logger().Write("CanTime",
+                       "TimeUS,CANTime,can1,can2,can3,can4,can5,can6",
+                       "s-------",
+                       "F-------",
+                       "Qfffffff",
+                       AP_HAL::micros64(),
+                       packet.Timestamp,
+                       packet.can1,
+                       packet.can2,
+                       packet.can3,
+                       packet.can4,
+                       packet.can5,
+                       packet.can6);
+}
 /*
   send RC_CHANNELS messages
  */
@@ -3925,7 +3982,16 @@ void GCS_MAVLINK::handle_common_message(const mavlink_message_t &msg)
     case MAVLINK_MSG_ID_AERORIVER_GERAL:
         handle_msg_aeroriver_geral(msg);
         break;
-
+    case MAVLINK_MSG_ID_AERORIVER_LIDAR:
+        handle_msg_aeroriver_lidar(msg);
+        break;
+    case MAVLINK_MSG_ID_AERORIVER_PROBE:
+        handle_msg_aeroriver_probe(msg);
+        break;
+    case MAVLINK_MSG_ID_AERORIVER_CAN:
+        handle_msg_aeroriver_can(msg);
+        break;
+    //--- AeroRiver ---//
 #if AP_CAMERA_ENABLED
     case MAVLINK_MSG_ID_DIGICAM_CONTROL:
     case MAVLINK_MSG_ID_GOPRO_HEARTBEAT: // heartbeat from a GoPro in Solo gimbal
