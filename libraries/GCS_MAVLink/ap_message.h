@@ -90,10 +90,10 @@ enum ap_message : uint8_t {
     MSG_RELAY_STATUS,
 
     // AeroRiver
-    AERORIVER_GERAL,
-    AERORIVER_LIDAR,
-    AERORIVER_PROBE,
-    AERORIVER_CAN,
+    GERAL_AERORIVER,
+    LIDAR_AERORIVER,
+    PROBE_AERORIVER,
+    CAN_AERORIVER,
     //AeroRiver
     MSG_LAST // MSG_LAST must be the last entry in this enum
 };
